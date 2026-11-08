@@ -748,9 +748,10 @@ body { margin:0; }
   <p class="feliz muertos-only">Feliz Día de Muertos</p>
 
   <footer>
-    <span>Barbería Santo Ángel 394 · Air Cut</span>
-    <span>Tu estilo, nuestra pasión</span>
-  </footer>
+  <span>Barbería Santo Ángel 394 · Air Cut</span>
+  <span>Visitas: <b id="visitas">…</b></span>
+  <span>Tu estilo, nuestra pasión</span>
+</footer>
 </div>
 
 <div id="yt-holder" aria-hidden="true"><div id="yt-player"></div></div>
@@ -1112,5 +1113,33 @@ body { margin:0; }
     show('credit');
   }
 })();
+</script>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyD9kgLt2hYsJzNqCs0iZFvgiPVkTgvo4Zw",
+  authDomain: "barberia-santo-angel.firebaseapp.com",
+  projectId: "barberia-santo-angel"
+});
+const ref = doc(getFirestore(app), "contadores", "visitas");
+const el = document.getElementById("visitas");
+
+try {
+  // Cuenta una vez por día por navegador
+  const hoy = new Date().toDateString();
+  let contada = false;
+  try { contada = localStorage.getItem("visita-dia") === hoy; } catch (e) {}
+  if (!contada) {
+    await updateDoc(ref, { total: increment(1) });
+    try { localStorage.setItem("visita-dia", hoy); } catch (e) {}
+  }
+  const snap = await getDoc(ref);
+  el.textContent = snap.data().total.toLocaleString("es-MX");
+} catch (e) {
+  el.textContent = "—";
+}
 </script>
 </body></html>
