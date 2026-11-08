@@ -3,10 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;700&family=Kaushan+Script&display=swap" rel="stylesheet">
 <style>
-/* Concepto: el cartel del cliente hecho página. La imagen de bienvenida manda en la portada y el logo
-   la cruza. Noche azul con destellos violeta y azul eléctrico, dorado como color de marca, postes de
-   barbero rojo/blanco/azul. Titulares en Anton, frases en Kaushan Script como el rotulado a mano del logo.
-   Una sola identidad oscura, a propósito. */
+
 :root {
   color-scheme: dark;
   --night: #05070f;
@@ -298,20 +295,229 @@ footer { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wr
   .cta .btn { width: 100%; }
 }
 
+/* ===== Rediseño v17: cartel impreso. Paleta tomada del logo y los carteles (azul tinta, dorado arena, azul acero),
+   sin violeta ni brillos borrosos: sombras sólidas, papel, grano y puntos de trama. ===== */
+:root {
+  --night: #070a14; --navy: #0c1222; --navy-2: #121b33;
+  --electric: #35669c; --blue-hi: #8fb3e3; --ink-blue: #1b3a64;
+  --gold: #e0b04a; --gold-hi: #f0d28a; --gold-lo: #8e7244;
+  --bone: #efe6d2; --paper: #efe6d2; --ink: #14110a; --stamp: #a3262f;
+  --muted: #a8b2c9; --pole-red: #c8323f;
+  --line: rgba(224, 176, 74, .5);
+}
+body { background-image: none; background-color: var(--night); }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: .11; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.gold { background: none; -webkit-text-fill-color: currentColor; color: var(--gold); }
+.eyebrow { color: var(--blue-hi); }
+.eyebrow::before { width: 26px; height: 4px; margin-right: 12px; background: var(--pole-red); }
+
+.btn { border-radius: 2px; border-width: 2px; transition: transform .12s, box-shadow .12s; }
+.btn-gold { background: var(--gold); color: var(--ink); border-color: var(--ink); box-shadow: 4px 4px 0 var(--gold-lo); }
+.btn-gold:hover { filter: none; transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--gold-lo); }
+.btn-line { background: transparent; color: var(--bone); border-color: var(--bone); box-shadow: 4px 4px 0 var(--ink-blue); }
+.btn-line:hover { background: rgba(239, 230, 210, .08); transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink-blue); }
+
+.card { background: var(--navy); border: 2px solid var(--gold); border-radius: 2px; box-shadow: 6px 6px 0 var(--ink-blue); }
+
+/* Portada: foto de bienvenida como impresión pegada, con trama de puntos y sello */
+.welcome { padding: 10px 10px 14px; background: var(--paper); border-radius: 2px; transform: rotate(2.2deg); box-shadow: 10px 10px 0 var(--gold-lo); }
+.welcome::before {
+  inset: 22px -22px -22px 22px; filter: none; z-index: -2; background: radial-gradient(circle, rgba(224, 176, 74, .55) 2px, transparent 2.4px) 0 0 / 14px 14px;
+}
+.welcome .frame { -webkit-mask-image: none; mask-image: none; }
+.welcome .frame img { filter: grayscale(1) contrast(1.15) brightness(.98); }
+.welcome .frame::after { background: #c79a3a; opacity: .5; mix-blend-mode: color; }
+.sticker {
+  position: absolute; left: -16px; bottom: 6%; z-index: 3; width: 96px; height: 96px; display: grid; place-content: center; text-align: center;
+  background: var(--stamp); color: var(--bone); border: 3px solid var(--bone); border-radius: 50%; transform: rotate(-12deg);
+  font-family: var(--display); text-transform: uppercase; line-height: 1; box-shadow: 4px 4px 0 var(--ink);
+}
+.sticker b { font-weight: 400; font-size: 1.15rem; letter-spacing: .01em; }
+.sticker small { font-family: var(--body); font-weight: 700; font-size: .62rem; letter-spacing: .16em; margin-top: 3px; }
+.logo-frame::before { display: none; }
+.logo-frame img { filter: none; }
+.hero-line { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .01em; font-size: clamp(2.2rem, 6.2vw, 4rem); line-height: 1; text-wrap: balance; }
+.hero-line span { color: var(--gold); }
+.hero-text p.lead { color: var(--bone); opacity: .9; }
+
+/* Cinta de lema, como etiqueta impresa */
+.motto { background: var(--gold); color: var(--ink); border: 0; padding-inline: 16px; }
+.motto span:nth-child(even) { color: var(--stamp); }
+
+.sec-head h2 { color: var(--bone); }
+.sec-head h2.gold { color: var(--bone); }
+.sec-head h2::after { content: ""; display: block; width: 88px; height: 6px; margin-top: 14px; background: repeating-linear-gradient(45deg, var(--pole-red) 0 8px, var(--bone) 8px 16px, var(--electric) 16px 24px, var(--bone) 24px 32px); }
+
+/* Precios: ticket de papel con borde dentado */
+.prices > .card.panel {
+  position: relative; background: var(--paper); border: 0; color: var(--ink); border-radius: 2px;
+  box-shadow: 8px 8px 0 var(--gold-lo); transform: rotate(-.8deg);
+  background-image: radial-gradient(rgba(20, 17, 10, .07) 1px, transparent 1.2px); background-size: 7px 7px;
+}
+.prices > .card.panel::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 10px;
+  background: linear-gradient(135deg, var(--paper) 50%, transparent 50%) 0 0 / 14px 10px, linear-gradient(225deg, var(--paper) 50%, transparent 50%) 0 0 / 14px 10px;
+}
+.prices .panel h3 { color: var(--ink); border-bottom: 3px double var(--ink); padding-bottom: 8px; }
+.prices .panel .row .n { color: var(--ink); }
+.prices .panel .row .n small { color: #5d5440; }
+.prices .panel .leader { border-bottom: 2px dashed rgba(20, 17, 10, .45); }
+.prices .panel .p { color: var(--stamp); }
+.panel-art img { -webkit-mask-image: none; mask-image: none; width: clamp(96px, 26%, 128px); border: 3px solid var(--ink); transform: rotate(3deg); box-shadow: 4px 4px 0 var(--stamp); }
+.panel-art p { color: var(--stamp); }
+.pack { box-shadow: 6px 6px 0 var(--ink-blue); }
+.pack .tag { background: var(--stamp); color: var(--bone); border-radius: 2px; transform: rotate(-2deg); letter-spacing: .2em; }
+.pack .big { color: var(--gold); }
+
+.posters img { border-radius: 2px; border: 3px solid var(--bone); box-shadow: 8px 8px 0 var(--ink-blue); }
+.posters figure:nth-child(odd) { transform: rotate(-1.2deg); }
+.posters figure:nth-child(even) { transform: rotate(1.2deg); }
+.tab { border-radius: 2px; border-color: rgba(239, 230, 210, .4); }
+.tab[aria-selected="true"] { background: var(--gold); color: var(--ink); border-color: var(--ink); box-shadow: 3px 3px 0 var(--gold-lo); }
+.chip { background: var(--navy); border: 2px solid rgba(239, 230, 210, .45); border-radius: 2px; }
+.chip[aria-pressed="true"] { background: var(--gold); color: var(--ink); border-color: var(--ink); box-shadow: 2px 2px 0 var(--gold-lo); }
+.steps li::before { background: none; -webkit-text-fill-color: currentColor; color: var(--gold); }
+.steps li:nth-child(2) { transform: translateY(14px); }
+.map-frame { border: 2px solid var(--gold); border-radius: 2px; box-shadow: 6px 6px 0 var(--ink-blue); }
+
+.credit { background: var(--navy); border-radius: 2px; border: 2px solid var(--gold); border-left-width: 6px; box-shadow: 4px 4px 0 var(--ink-blue); }
+.wa-fab { box-shadow: 3px 3px 0 var(--ink); border: 2px solid var(--ink); }
+.music { background: var(--navy); border-color: var(--bone); border-radius: 2px; box-shadow: 3px 3px 0 var(--ink-blue); }
+.music[aria-pressed="true"] { border-color: var(--gold); box-shadow: 3px 3px 0 var(--gold-lo); }
+.eq i { background: var(--blue-hi); }
+
+@media (max-width: 860px) {
+  .welcome { box-shadow: 7px 7px 0 var(--gold-lo); margin-bottom: 30px; }
+  .welcome::before { inset: 18px -12px -14px 14px; }
+  .sticker { left: -8px; width: 84px; height: 84px; }
+  .sticker b { font-size: 1.02rem; }
+  .prices > .card.panel { transform: none; }
+  .steps li:nth-child(2) { transform: none; }
+  .posters figure:nth-child(n) { transform: rotate(-.8deg); }
+}
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+/* ===== Tema Día de Muertos: se activa solo del 24 de oct. al 3 de nov. (o con CONFIG.temporada = 'muertos') ===== */
+.muertos-only { display: none; }
+body.muertos .muertos-only { display: block; }
+body.muertos { --cempa: #f28c1e; --magenta: #c2185b; --flor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%280 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%2845 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%2890 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%28135 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%28180 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%28225 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%28270 20 20%29'/%3E%3Cellipse cx='20' cy='9' rx='5.5' ry='9' fill='%23f28c1e' transform='rotate%28315 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%2822 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%2867 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%28112 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%28157 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%28202 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%28247 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%28292 20 20%29'/%3E%3Cellipse cx='20' cy='11' rx='4' ry='7' fill='%23ffb938' transform='rotate%28337 20 20%29'/%3E%3Ccircle cx='20' cy='20' r='4.5' fill='%239a3b08'/%3E%3C/svg%3E"); }
+.papel-picado { display: none; }
+body.muertos .papel-picado {
+  display: block; height: 62px; margin: 0 calc(50% - 50vw) 6px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='224' height='62' viewBox='0 0 224 62'%3E%3Crect width='224' height='3' fill='%23efe6d2'/%3E%3Cpath d='M4 4H52V52L46 58L40 52L34 58L28 52L22 58L16 52L10 58L4 52Z' fill='%23f28c1e'/%3E%3Ccircle cx='28' cy='24' r='7' fill='%23070a14'/%3E%3Ccircle cx='28' cy='24' r='2.6' fill='%23f28c1e'/%3E%3Cpath d='M10 12l3 3-3 3-3-3zM46 12l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M18 40l3 3-3 3-3-3zM28 40l3 3-3 3-3-3zM38 40l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M60 4H108V52L102 58L96 52L90 58L84 52L78 58L72 52L66 58L60 52Z' fill='%23c2185b'/%3E%3Ccircle cx='84' cy='24' r='7' fill='%23070a14'/%3E%3Ccircle cx='84' cy='24' r='2.6' fill='%23c2185b'/%3E%3Cpath d='M66 12l3 3-3 3-3-3zM102 12l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M74 40l3 3-3 3-3-3zM84 40l3 3-3 3-3-3zM94 40l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M116 4H164V52L158 58L152 52L146 58L140 52L134 58L128 52L122 58L116 52Z' fill='%23e0b04a'/%3E%3Ccircle cx='140' cy='24' r='7' fill='%23070a14'/%3E%3Ccircle cx='140' cy='24' r='2.6' fill='%23e0b04a'/%3E%3Cpath d='M122 12l3 3-3 3-3-3zM158 12l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M130 40l3 3-3 3-3-3zM140 40l3 3-3 3-3-3zM150 40l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M172 4H220V52L214 58L208 52L202 58L196 52L190 58L184 52L178 58L172 52Z' fill='%235aa9d6'/%3E%3Ccircle cx='196' cy='24' r='7' fill='%23070a14'/%3E%3Ccircle cx='196' cy='24' r='2.6' fill='%235aa9d6'/%3E%3Cpath d='M178 12l3 3-3 3-3-3zM214 12l3 3-3 3-3-3z' fill='%23070a14'/%3E%3Cpath d='M186 40l3 3-3 3-3-3zM196 40l3 3-3 3-3-3zM206 40l3 3-3 3-3-3z' fill='%23070a14'/%3E%3C/svg%3E") 0 0 / 224px 62px repeat-x;
+  animation: ondea 5s ease-in-out infinite alternate; transform-origin: top center;
+}
+@keyframes ondea { from { transform: skewX(-.8deg); } to { transform: skewX(.8deg); } }
+@media (prefers-reduced-motion: reduce) { body.muertos .papel-picado { animation: none; } }
+body.muertos .eyebrow::before { width: 22px; height: 22px; background: var(--flor) center / contain no-repeat; margin-right: 10px; }
+body.muertos .hero-line span { color: var(--cempa); }
+body.muertos .welcome { box-shadow: 10px 10px 0 #9a3b08; }
+body.muertos .welcome::before { background: radial-gradient(circle, rgba(242, 140, 30, .6) 2px, transparent 2.4px) 0 0 / 14px 14px; }
+body.muertos .welcome .frame::after { background: #e07a1a; }
+body.muertos .sticker { background: var(--magenta); }
+.skull { position: absolute; top: -34px; right: -16px; z-index: 3; width: 86px; height: auto; transform: rotate(9deg); filter: drop-shadow(4px 4px 0 #14110a); }
+body.muertos .motto { background: var(--cempa); }
+body.muertos .motto span:nth-child(even) { color: #6e0c33; }
+body.muertos .stripe { height: 26px; border: 0; background: var(--flor) 0 0 / 26px 26px repeat-x; }
+body.muertos .stripe::before { display: none; }
+body.muertos .sec-head h2::after { width: 132px; height: 22px; background: var(--flor) 0 0 / 22px 22px repeat-x; }
+body.muertos .pack .tag, body.muertos .prices .panel .p { color: inherit; }
+body.muertos .prices .panel .p { color: var(--magenta); }
+body.muertos .pack .tag { background: var(--magenta); }
+body.muertos .btn-gold { background: var(--cempa); box-shadow: 4px 4px 0 #9a3b08; }
+body.muertos .btn-gold:hover { box-shadow: 2px 2px 0 #9a3b08; }
+body.muertos .card { border-color: var(--cempa); }
+.feliz { text-align: center; font-family: var(--script); color: var(--cempa); font-size: clamp(1.5rem, 4.4vw, 2.2rem); padding-block: 22px 0; }
+body.muertos .feliz { display: block; }
+@media (max-width: 860px) { .skull { width: 66px; top: -26px; right: -6px; } }
+
+/* ===== Día de Muertos, versión intensa ===== */
+body.muertos { background-color: #0e0818; --cempa: #f28c1e; }
+.petals { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 15; }
+.petal { position: absolute; top: -30px; width: var(--s); height: calc(var(--s) * 1.35); background: var(--c); border-radius: 80% 0 80% 0; opacity: .9; animation: caer var(--d) linear var(--dl) infinite; will-change: transform; }
+@keyframes caer {
+  0% { transform: translate3d(0, -30px, 0) rotate(0deg); }
+  50% { transform: translate3d(var(--x), 55vh, 0) rotate(200deg); }
+  100% { transform: translate3d(calc(var(--x) * -.6), 112vh, 0) rotate(380deg); }
+}
+.guirnalda { display: none; position: absolute; left: -22px; right: -22px; height: 44px; z-index: 3; background: var(--flor) 0 0 / 40px 40px repeat-x; filter: drop-shadow(2px 3px 0 #14110a); }
+body.muertos .guirnalda { display: block; }
+.g-top { top: -22px; }
+.g-bot { bottom: -22px; background-position: 20px 0; }
+body.muertos .skull { width: 112px; top: -62px; right: -30px; z-index: 4; }
+body.muertos .welcome { transform: rotate(1.6deg); }
+
+.ofrenda { display: none; }
+body.muertos .ofrenda {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(10px, 4vw, 48px);
+  padding: clamp(26px, 5vw, 48px) clamp(14px, 3vw, 40px); margin-block: 0; text-align: center;
+  background: #2a0a33; border-block: 4px solid var(--cempa); position: relative;
+  background-image: radial-gradient(circle, rgba(242, 140, 30, .22) 2px, transparent 2.4px); background-size: 18px 18px;
+}
+.o-skull { width: clamp(70px, 14vw, 150px); height: auto; filter: drop-shadow(5px 5px 0 #14110a); transform: rotate(-8deg); }
+.o-skull.flip { transform: scaleX(-1) rotate(-8deg); }
+.of-text { display: grid; justify-items: center; gap: 8px; min-width: 0; }
+.of-title { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(2.4rem, 8vw, 5rem); line-height: .95; color: var(--bone); }
+.of-title span { color: var(--cempa); }
+.calaverita { font-family: var(--script); color: var(--bone); font-size: clamp(1.15rem, 3.4vw, 1.7rem); line-height: 1.3; max-width: 28rem; }
+.velas { display: flex; gap: 22px; align-items: flex-end; margin-top: 8px; }
+.vela { width: 22px; height: auto; }
+.vela:nth-child(2) { width: 28px; }
+.llama { transform-origin: 50% 90%; transform-box: fill-box; animation: parpadea 1.1s ease-in-out infinite alternate; }
+.vela:nth-child(2) .llama { animation-duration: .8s; }
+.vela:nth-child(3) .llama { animation-duration: 1.4s; }
+@keyframes parpadea { from { transform: scale(1, .92) rotate(-2deg); opacity: .9; } to { transform: scale(.94, 1.08) rotate(2deg); opacity: 1; } }
+.pp-bottom { display: none; }
+body.muertos .pp-bottom { display: block; transform: scaleY(-1); animation: none; margin-top: 30px; margin-bottom: 0; }
+@media (max-width: 860px) {
+  body.muertos .skull { width: 82px; top: -44px; right: -12px; }
+  body.muertos .ofrenda { grid-template-columns: minmax(0, 1fr); }
+  .o-skull { display: none; }
+  .guirnalda { height: 36px; background-size: 32px 32px; left: -14px; right: -14px; }
+  .g-top { top: -18px; } .g-bot { bottom: -18px; }
+}
+@media (prefers-reduced-motion: reduce) { .llama { animation: none; } .petals { display: none; } }
+
+/* ===== Horario de atención ===== */
+.hoy { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; text-align: center; gap: 4px 12px; margin: 10px 0 0; padding: 10px 16px; border: 2px solid var(--bone); border-radius: 2px; background: var(--navy); color: var(--bone); text-decoration: none; font-weight: 600; font-size: .95rem; box-shadow: 4px 4px 0 var(--ink-blue); }
+.hoy[hidden] { display: none; }
+.hoy-rango { color: var(--muted); font-weight: 500; }
+.hoy .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--pole-red); flex: none; }
+.hoy.abierto .dot { background: #25d366; box-shadow: 0 0 0 3px rgba(37, 211, 102, .3); }
+.horario { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(20px, 4vw, 48px); align-items: center; padding: clamp(22px, 4vw, 40px); }
+.h-hours { font-family: var(--display); text-transform: none; font-size: clamp(2rem, 5.6vw, 3.4rem); line-height: 1; }
+.h-sub { color: var(--bone); margin-top: 10px; font-size: 1.05rem; }
+.h-status { display: inline-block; margin-top: 16px; padding: 6px 12px; border-radius: 2px; font-weight: 700; font-size: .92rem; background: var(--stamp); color: var(--bone); }
+.h-status.abierto { background: #1f7a45; }
+.h-days { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.h-days li { display: flex; align-items: baseline; gap: 10px; padding: 8px 10px; border-bottom: 2px dotted rgba(239, 230, 210, .22); }
+.h-days .d { font-weight: 700; min-width: 6.4rem; }
+.h-days .l { flex: 1 1 auto; }
+.h-days .t { color: var(--bone); font-variant-numeric: tabular-nums; text-align: right; }
+.h-days li.descanso .t { color: var(--blue-hi); font-weight: 700; }
+.h-days li.hoy-fila { background: rgba(224, 176, 74, .16); border-left: 4px solid var(--gold); border-bottom-color: transparent; }
+.h-days li.hoy-fila .d::after { content: " · hoy"; color: var(--gold); font-weight: 600; }
+@media (max-width: 860px) { .horario { grid-template-columns: minmax(0, 1fr); } .h-days .d { min-width: 5.6rem; } }
+
 html { padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px); }
 body { margin:0; }
 </style></head><body>
 
 <div class="wrap">
+  <div class="papel-picado" aria-hidden="true"></div>
   <div class="top">
     <a class="brand gold" href="#">Santo Ángel 394</a>
     <nav class="nav" aria-label="Secciones">
       <a href="#precios">Precios</a>
       <a href="#cortes">Cortes</a>
       <a href="#citas">Citas</a>
+      <a href="#horario" id="nav-horario" hidden>Horario</a>
       <a href="#ubicacion" id="nav-ubicacion" hidden>Ubicación</a>
     </nav>
   </div>
+  <a class="hoy" id="hoy-chip" href="#horario" hidden><i class="dot" aria-hidden="true"></i><span class="hoy-estado" id="hoy-text"></span><span class="hoy-rango" id="hoy-rango"></span></a>
 
   <header class="hero">
     <div class="hero-logo">
@@ -322,11 +528,14 @@ body { margin:0; }
     </div>
     <figure class="welcome">
       <div class="frame"><img src="img/bienvenida.jpg" width="736" height="1308" alt="Collage en blanco y negro de cortes de cabello, barba y afeitado con la palabra welcome."></div>
+      <svg class="skull muertos-only" viewBox="0 0 100 120" aria-hidden="true"><path d="M50 6C22 6 12 28 14 50c1 12 6 20 12 26v22q0 8 8 8h32q8 0 8-8V76c6-6 11-14 12-26C88 28 78 6 50 6z" fill="#efe6d2" stroke="#14110a" stroke-width="3"/><circle cx="33" cy="52" r="19" fill="#c2185b"/><circle cx="67" cy="52" r="19" fill="#c2185b"/><circle cx="33" cy="52" r="13" fill="#14110a"/><circle cx="67" cy="52" r="13" fill="#14110a"/><circle cx="33" cy="52" r="4" fill="#f28c1e"/><circle cx="67" cy="52" r="4" fill="#f28c1e"/><path d="M50 68l-6 9h12z" fill="#14110a"/><circle cx="50" cy="22" r="5" fill="#f28c1e"/><circle cx="36" cy="28" r="3" fill="#e0b04a"/><circle cx="64" cy="28" r="3" fill="#e0b04a"/><path d="M28 90q22 10 44 0" fill="none" stroke="#14110a" stroke-width="3"/><path d="M38 91v11M46 93v11M54 93v11M62 91v11" stroke="#14110a" stroke-width="3"/><circle cx="20" cy="70" r="3" fill="#f28c1e"/><circle cx="80" cy="70" r="3" fill="#f28c1e"/></svg>
+      <span class="guirnalda g-top muertos-only" aria-hidden="true"></span><span class="guirnalda g-bot muertos-only" aria-hidden="true"></span>
+      <span class="sticker" aria-hidden="true"><b>Amozoc</b><small>Puebla</small></span>
     </figure>
     <div class="hero-text">
         <p class="eyebrow">Bienvenido</p>
-        <p class="script">Estilo, disciplina y buen corte.</p>
-        <p class="lead">Corte, barba y el ritual de barba completo. Para jóvenes, adultos, niños y adultos mayores, con la mejor actitud siempre.</p>
+        <p class="hero-line">Corte, barba y <span>ritual completo.</span></p>
+        <p class="lead">Para jóvenes, adultos, niños y adultos mayores, con la mejor actitud siempre. Tu cita se pide directo por WhatsApp.</p>
         <div class="cta">
           <a class="btn btn-gold" href="https://wa.me/522227483896?text=Hola%2C%20quiero%20pedir%20una%20cita%20en%20Barber%C3%ADa%20Santo%20%C3%81ngel%20394" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.3 5.3 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3c.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.6-.4z"/></svg>
@@ -341,6 +550,18 @@ body { margin:0; }
   <div class="motto" aria-label="Lema">
     <span>Estilo</span><span>Disciplina</span><span>Buen corte</span><span>Tu estilo, nuestra pasión</span>
   </div>
+
+  <section class="ofrenda muertos-only" aria-label="Día de Muertos">
+    <svg class="o-skull" viewBox="0 0 100 120" aria-hidden="true"><path d="M50 6C22 6 12 28 14 50c1 12 6 20 12 26v22q0 8 8 8h32q8 0 8-8V76c6-6 11-14 12-26C88 28 78 6 50 6z" fill="#efe6d2" stroke="#14110a" stroke-width="3"/><circle cx="33" cy="52" r="19" fill="#c2185b"/><circle cx="67" cy="52" r="19" fill="#c2185b"/><circle cx="33" cy="52" r="13" fill="#14110a"/><circle cx="67" cy="52" r="13" fill="#14110a"/><circle cx="33" cy="52" r="4" fill="#f28c1e"/><circle cx="67" cy="52" r="4" fill="#f28c1e"/><path d="M50 68l-6 9h12z" fill="#14110a"/><circle cx="50" cy="22" r="5" fill="#f28c1e"/><circle cx="36" cy="28" r="3" fill="#e0b04a"/><circle cx="64" cy="28" r="3" fill="#e0b04a"/><path d="M28 90q22 10 44 0" fill="none" stroke="#14110a" stroke-width="3"/><path d="M38 91v11M46 93v11M54 93v11M62 91v11" stroke="#14110a" stroke-width="3"/><circle cx="20" cy="70" r="3" fill="#f28c1e"/><circle cx="80" cy="70" r="3" fill="#f28c1e"/></svg>
+    <div class="of-text">
+      <p class="eyebrow">1 y 2 de noviembre</p>
+      <h2 class="of-title">Día de <span>Muertos</span></h2>
+      <p class="calaverita">La Catrina pasó a pelarse<br>en Santo Ángel el domingo,<br>y salió tan bien peinada<br>que ya no quiso irse al panteón.</p>
+      <div class="velas" aria-hidden="true"><svg class="vela" viewBox="0 0 24 60" aria-hidden="true"><path class="llama" d="M12 2c5 7 6 11 6 15a6 6 0 0 1-12 0c0-4 1-8 6-15z" fill="#f28c1e"/><path class="llama" d="M12 9c3 4 3.5 6.5 3.5 9a3.5 3.5 0 0 1-7 0c0-2.500.5-5 3.500-9z" fill="#ffd966"/><rect x="5" y="24" width="14" height="34" rx="2" fill="#efe6d2" stroke="#14110a" stroke-width="2"/><rect x="5" y="24" width="14" height="6" fill="#d9cdb0"/></svg><svg class="vela" viewBox="0 0 24 60" aria-hidden="true"><path class="llama" d="M12 2c5 7 6 11 6 15a6 6 0 0 1-12 0c0-4 1-8 6-15z" fill="#f28c1e"/><path class="llama" d="M12 9c3 4 3.5 6.5 3.5 9a3.5 3.5 0 0 1-7 0c0-2.500.5-5 3.500-9z" fill="#ffd966"/><rect x="5" y="24" width="14" height="34" rx="2" fill="#efe6d2" stroke="#14110a" stroke-width="2"/><rect x="5" y="24" width="14" height="6" fill="#d9cdb0"/></svg><svg class="vela" viewBox="0 0 24 60" aria-hidden="true"><path class="llama" d="M12 2c5 7 6 11 6 15a6 6 0 0 1-12 0c0-4 1-8 6-15z" fill="#f28c1e"/><path class="llama" d="M12 9c3 4 3.5 6.5 3.5 9a3.5 3.5 0 0 1-7 0c0-2.500.5-5 3.500-9z" fill="#ffd966"/><rect x="5" y="24" width="14" height="34" rx="2" fill="#efe6d2" stroke="#14110a" stroke-width="2"/><rect x="5" y="24" width="14" height="6" fill="#d9cdb0"/></svg></div>
+    </div>
+    <svg class="o-skull flip" viewBox="0 0 100 120" aria-hidden="true"><path d="M50 6C22 6 12 28 14 50c1 12 6 20 12 26v22q0 8 8 8h32q8 0 8-8V76c6-6 11-14 12-26C88 28 78 6 50 6z" fill="#efe6d2" stroke="#14110a" stroke-width="3"/><circle cx="33" cy="52" r="19" fill="#c2185b"/><circle cx="67" cy="52" r="19" fill="#c2185b"/><circle cx="33" cy="52" r="13" fill="#14110a"/><circle cx="67" cy="52" r="13" fill="#14110a"/><circle cx="33" cy="52" r="4" fill="#f28c1e"/><circle cx="67" cy="52" r="4" fill="#f28c1e"/><path d="M50 68l-6 9h12z" fill="#14110a"/><circle cx="50" cy="22" r="5" fill="#f28c1e"/><circle cx="36" cy="28" r="3" fill="#e0b04a"/><circle cx="64" cy="28" r="3" fill="#e0b04a"/><path d="M28 90q22 10 44 0" fill="none" stroke="#14110a" stroke-width="3"/><path d="M38 91v11M46 93v11M54 93v11M62 91v11" stroke="#14110a" stroke-width="3"/><circle cx="20" cy="70" r="3" fill="#f28c1e"/><circle cx="80" cy="70" r="3" fill="#f28c1e"/></svg>
+  </section>
+
 
   <section id="precios">
     <div class="sec-head">
@@ -462,12 +683,27 @@ body { margin:0; }
     </div>
   </section>
 
+  <section id="horario" hidden>
+    <div class="sec-head">
+      <p class="eyebrow">Horario de atención</p>
+      <h2 class="gold">Cuándo abrimos</h2>
+    </div>
+    <div class="card horario">
+      <div class="h-big">
+        <p class="h-hours gold" id="h-hours"></p>
+        <p class="h-sub" id="h-sub"></p>
+        <p class="h-status" id="h-status"></p>
+      </div>
+      <ul class="h-days" id="h-days"></ul>
+    </div>
+  </section>
+
   <section id="citas" style="padding-top:0">
     <div class="card contact">
       <p class="eyebrow">Citas al</p>
       <p class="number gold" id="phone-text">222 748 3896</p>
       <p class="script">La mejor actitud... siempre.</p>
-      <p>Escríbenos por WhatsApp para pedir tu cita y preguntar la ubicación y los horarios.</p>
+      <p>Escríbenos por WhatsApp para pedir tu cita o resolver cualquier duda.</p>
       <div class="cta" style="justify-content:center">
         <a class="btn btn-gold" href="https://wa.me/522227483896?text=Hola%2C%20quiero%20pedir%20una%20cita%20en%20Barber%C3%ADa%20Santo%20%C3%81ngel%20394" target="_blank" rel="noopener">Abrir WhatsApp</a>
         <button class="copy" id="copy" type="button">Copiar número</button>
@@ -507,6 +743,9 @@ body { margin:0; }
     </div>
     <div class="credit-links" id="credit-links"></div>
   </aside>
+
+  <div class="papel-picado pp-bottom" aria-hidden="true"></div>
+  <p class="feliz muertos-only">Feliz Día de Muertos</p>
 
   <footer>
     <span>Barbería Santo Ángel 394 · Air Cut</span>
@@ -757,19 +996,91 @@ body { margin:0; }
     /* Ubicación de la barbería */
     direccion: '16 de Septiembre 410, Santo Ángel, 72980 Amozoc de Mota, Pue.',
     referencia: '',         // opcional, ej. 'Frente a la farmacia, junto al parque'
-    horario: '',            // opcional, ej. 'Lunes a sábado de 10:00 a 20:00'
+    horario: 'Lunes a domingo de 10:00 a. m. a 7:30 p. m. · Descansamos los miércoles',   // texto en "Dónde estamos"
+    abre: '10:00',          // hora de apertura (24 h). Vacío = no se muestra la sección de horario
+    cierra: '19:30',        // hora de cierre (24 h)
+    descanso: 3,            // día de descanso: 0 domingo, 1 lunes, 2 martes, 3 miércoles... (-1 = abre todos los días)
     mapaUrl: '',            // opcional: enlace de Google Maps. Si está vacío se arma con la dirección
 
     /* Crédito de quien hizo la página (discreto, en el pie) */
     creador: 'Alejandro Martinez',
     creadorWhatsapp: '522228060935',   // solo números: 52 + lada + número
     creadorEnlace: 'https://www.instagram.com/ale_jdk_/',            // tu Instagram
-    creadorPortafolio: 'https://portafolio-bay-two-19.vercel.app/'   // tu portafolio
+    creadorPortafolio: 'https://portafolio-bay-two-19.vercel.app/',  // tu portafolio
+
+    /* Tema de temporada: 'auto' (Día de Muertos del 24 de oct. al 3 de nov.), 'muertos' (siempre) o 'no' (nunca) */
+    temporada: 'auto'
   };
   /* ================================================== */
 
+  (function () {
+    var d = new Date(), m = d.getMonth(), dia = d.getDate(), t = CONFIG.temporada;
+    if (t === 'muertos' || (t === 'auto' && ((m === 9 && dia >= 24) || (m === 10 && dia <= 3)))) {
+      document.body.classList.add('muertos');
+      if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        var box = document.createElement('div'); box.className = 'petals'; box.setAttribute('aria-hidden', 'true');
+        var cols = ['#f28c1e', '#ffb938', '#e0731a', '#c2185b'], n = window.innerWidth < 700 ? 9 : 16;
+        for (var i = 0; i < n; i++) {
+          var p = document.createElement('i'); p.className = 'petal';
+          p.style.cssText = 'left:' + (Math.random() * 100).toFixed(1) + '%;--s:' + (9 + Math.random() * 10).toFixed(0) + 'px;--c:' + cols[i % cols.length] +
+            ';--d:' + (9 + Math.random() * 9).toFixed(1) + 's;--dl:-' + (Math.random() * 16).toFixed(1) + 's;--x:' + ((Math.random() * 120) - 60).toFixed(0) + 'px';
+          box.appendChild(p);
+        }
+        document.body.appendChild(box);
+      }
+    }
+  })();
+
   function $(id) { return document.getElementById(id); }
   function show(id) { var e = $(id); if (e) e.hidden = false; }
+
+
+  /* ---- Horario de atención ---- */
+  if (CONFIG.abre && CONFIG.cierra) {
+    var DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    var MAPA = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    var desc = typeof CONFIG.descanso === 'number' ? CONFIG.descanso : -1;
+    var hm = function (t) { var p = String(t).split(':'); return (+p[0]) * 60 + (+p[1] || 0); };
+    var fmt = function (t) { var p = String(t).split(':'), h = +p[0], m = +p[1] || 0, suf = h >= 12 ? 'p. m.' : 'a. m.'; h = h % 12 || 12; return h + ':' + (m < 10 ? '0' : '') + m + ' ' + suf; };
+    var ahoraMX = function () {
+      try {
+        var parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Mexico_City', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date()), o = {};
+        parts.forEach(function (x) { o[x.type] = x.value; });
+        return { dia: MAPA[o.weekday], min: (+o.hour) * 60 + (+o.minute) };
+      } catch (err) { var d = new Date(); return { dia: d.getDay(), min: d.getHours() * 60 + d.getMinutes() }; }
+    };
+    var rango = fmt(CONFIG.abre) + ' a ' + fmt(CONFIG.cierra);
+    $('h-hours').textContent = fmt(CONFIG.abre) + ' – ' + fmt(CONFIG.cierra);
+    $('h-sub').textContent = desc >= 0 ? 'Todos los días, menos los ' + DIAS[desc].toLowerCase() + ', que descansamos.' : 'Abrimos todos los días.';
+    var lista = $('h-days');
+    [1, 2, 3, 4, 5, 6, 0].forEach(function (d) {
+      var li = document.createElement('li'); li.dataset.dia = d;
+      var a = document.createElement('span'); a.className = 'd'; a.textContent = DIAS[d];
+      var l = document.createElement('span'); l.className = 'l';
+      var t = document.createElement('span'); t.className = 't';
+      if (d === desc) { li.className = 'descanso'; t.textContent = 'Descanso'; } else { t.textContent = rango; }
+      li.appendChild(a); li.appendChild(l); li.appendChild(t); lista.appendChild(li);
+    });
+    var estado = function () {
+      var n = ahoraMX(), a = hm(CONFIG.abre), c = hm(CONFIG.cierra);
+      if (n.dia !== desc && n.min >= a && n.min < c) return { abierto: true, txt: 'Abierto ahora · cerramos a las ' + fmt(CONFIG.cierra) };
+      if (n.dia !== desc && n.min < a) return { abierto: false, txt: 'Cerrado ahora · abrimos hoy a las ' + fmt(CONFIG.abre) };
+      var sig = (n.dia + 1) % 7; if (sig === desc) sig = (sig + 1) % 7;
+      var cuando = sig === (n.dia + 1) % 7 ? 'mañana' : 'el ' + DIAS[sig].toLowerCase();
+      return { abierto: false, txt: (n.dia === desc ? 'Hoy descansamos' : 'Cerrado ahora') + ' · abrimos ' + cuando + ' a las ' + fmt(CONFIG.abre) };
+    };
+    var pintar = function () {
+      var e = estado(), n = ahoraMX();
+      $('hoy-text').textContent = e.txt;
+      $('hoy-chip').className = 'hoy' + (e.abierto ? ' abierto' : '');
+      $('h-status').textContent = e.txt;
+      $('h-status').className = 'h-status' + (e.abierto ? ' abierto' : '');
+      Array.prototype.forEach.call(lista.children, function (li) { li.classList.toggle('hoy-fila', +li.dataset.dia === n.dia); });
+    };
+    $('hoy-rango').textContent = rango + (desc >= 0 ? ' · Descansamos los ' + DIAS[desc].toLowerCase() : '');
+    pintar(); setInterval(pintar, 60000);
+    show('hoy-chip'); show('horario'); show('nav-horario');
+  }
 
   if (CONFIG.direccion) {
     $('loc-address').textContent = CONFIG.direccion;
